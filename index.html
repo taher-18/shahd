@@ -435,7 +435,6 @@ body {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
-
 .celebration {
   position: fixed;
   top: 0;
@@ -453,6 +452,14 @@ body {
 }
 .celebration.active {
   display: flex;
+}
+
+body.celebration-active .container {
+  display: none !important;
+}
+
+body.celebration-active {
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -569,7 +576,6 @@ body {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .title h1 {
     font-size: 2.5rem;
@@ -588,6 +594,13 @@ body {
     width: 250px;
     height: 200px;
     transform: scale(0.8);
+    margin: 0 auto;
+  }
+  
+  .cake-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   
   .instruction {
@@ -641,8 +654,8 @@ body {
   
   <div class="instruction">
   💨 Blow into your microphone to blow out the candle!<br>
-  <button onclick="document.querySelector('.candle').classList.add('out'); setTimeout(() => document.getElementById('celebration').classList.add('active'), 1000);" 
-          style="margin-top: 15px; padding: 10px 20px; background: #DAA520; border: none; border-radius: 10px; color: white; font-size: 1rem; cursor: pointer;">
+<button onclick="document.querySelector('.candle').classList.add('out'); setTimeout(() => { document.getElementById('celebration').classList.add('active'); document.body.classList.add('celebration-active'); }, 1000);"
+              style="margin-top: 15px; padding: 10px 20px; background: #DAA520; border: none; border-radius: 10px; color: white; font-size: 1rem; cursor: pointer;">
     Or tap here if microphone doesn't work
   </button>
 </div>
@@ -706,11 +719,12 @@ document.addEventListener("DOMContentLoaded", function () {
   let microphone;
   let candleBlownOut = false;
 
-  function checkCandleOut() {
+function checkCandleOut() {
     if (candle.classList.contains("out") && !candleBlownOut) {
       candleBlownOut = true;
       setTimeout(() => {
         document.getElementById('celebration').classList.add('active');
+        document.body.classList.add('celebration-active');
       }, 1000);
     }
   }
